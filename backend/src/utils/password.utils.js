@@ -18,6 +18,10 @@ const hashpassword = async (password) => {
 };
 
 const verifyPassword = async (hash, password) => {
+    if (!hash || !password) {
+        throw new Error("hash and password are required arguments");
+    }
+
     try {
         return await argon2.verify(hash, password);
     } catch (error) {

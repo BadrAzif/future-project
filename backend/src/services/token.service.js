@@ -1,5 +1,5 @@
-import { V4} from "paseto";
-import {audience, issuer, secretKey, expiresIn, refreshExpiresIn} from "../config/paseto.js";
+import { V4 } from "paseto";
+import { audience, issuer, secretKey, expiresIn, refreshExpiresIn } from "../config/paseto.js";
 import { prisma } from "../config/database.js";
 
 const generateTokens = async (user, rememberMe = false) => {
@@ -21,8 +21,8 @@ const generateTokens = async (user, rememberMe = false) => {
     } else if (timeUnit === "d") {
         expirationDate.setDate(expirationDate.getDate() + timeValue);
     }
-    const privateKey = await V4.generateKey('public');
-    const token = await V4.sign(payload, privateKey, {
+
+    const token = await V4.sign(payload, secretKey, {
         issuer,
         audience,
         expiresIn: tokenExp,
@@ -65,4 +65,4 @@ const revokeAllUserTokens = async (userId) => {
         },
     });
 };
-export { revokeToken, revokeAllUserTokens, generateTokens ,verifyToken};
+export { revokeToken, revokeAllUserTokens, generateTokens, verifyToken };

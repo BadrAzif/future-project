@@ -138,7 +138,7 @@ const resetPasswordCtrl = async (req, res) => {
 
 const logoutCtrl = async (req, res) => {
     try {
-        const token = req.cookies.token || req.headers.authorization?.split("")[1];
+        const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
 
         if (token) {
             await logout(token);
@@ -149,7 +149,7 @@ const logoutCtrl = async (req, res) => {
             message: "Logout successfully",
         });
     } catch (error) {
-        logger.error("Logout controller error", error);
+        logger.error("Logout controller error", error.stack);
         res.status(500).json({
             status: "error",
             message: "Logout failed. Please try again.",

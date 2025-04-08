@@ -3,9 +3,8 @@ import 'dotenv/config';
 let privateKeyPromise ;
 const loadPrivateKey = async () => {
   if (!privateKeyPromise) {
-    const pem = process.env.PASETO_PRIVATE_KEY;
-    if (!pem) throw new Error("Missing PASETO_PRIVATE_KEY in .env");
-    privateKeyPromise = importKey(pem, 'public'); // كنستوردو مفتاح التوقيع
+    if (!process.env.PASETO_PRIVATE_KEY) throw new Error("Missing PASETO_PRIVATE_KEY in .env");
+    privateKeyPromise = V4.generateKey('public');
   }
   return privateKeyPromise;
 };

@@ -27,5 +27,5 @@ router.post(
 );
 
 router.get("/profile", authenticate, getProfileCtrl);
-router.post("/logout", authenticate, loginCtrl);
+router.post("/logout",  authenticate,logoutCtrl);
 export default router;

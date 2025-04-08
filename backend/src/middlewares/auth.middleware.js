@@ -1,7 +1,7 @@
 import { V4 } from "paseto";
 import logger from "../utils/loggers.utils.js";
 import { prisma } from "../config/database.js";
-import {audience,issuer,secretKey,expiresIn,refreshExpiresIn} from "../config/paseto.js";
+import { audience, issuer, secretKey } from "../config/paseto.js";
 
 const authenticate = async (req, res, next) => {
     try {
@@ -12,7 +12,7 @@ const authenticate = async (req, res, next) => {
                 .json({ status: "error", message: "authentication required" });
         }
         try {
-            const payload = await V4.verify(token, secretKey, {
+            await V4.verify(token,secretKey, {
                 issuer,
                 audience,
             });
@@ -38,7 +38,7 @@ const authenticate = async (req, res, next) => {
             req.session = session;
             next();
         } catch (error) {
-            logger.error("Token verification failed", error);
+            logger.error("Token verification failed", error.stack);
             return res.status(401).json({
                 status: "error",
                 message: "Invalid or expired token",
@@ -51,4 +51,4 @@ const authenticate = async (req, res, next) => {
             .json({ status: "error", message: "Error authenticating user" });
     }
 };
-export  {authenticate};
+export { authenticate };
