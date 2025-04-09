@@ -142,17 +142,22 @@ const logoutCtrl = async (req, res) => {
 
         if (token) {
             await logout(token);
+            res.clearCookie("token", {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+                sameSite: process.env.NODE_ENV === "production" ? "none" : "lax"
+            });
         }
-        res.clearCookie("token");
+        
         return res.status(200).json({
             status: "success",
-            message: "Logout successfully",
+            message: "Logged out successfully"
         });
     } catch (error) {
         logger.error("Logout controller error", error.stack);
         res.status(500).json({
             status: "error",
-            message: "Logout failed. Please try again.",
+            message: "Logout failed. Please try again."
         });
     }
 };

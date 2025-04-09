@@ -35,7 +35,7 @@ const authenticate = async (req, res, next) => {
             }
 
             req.user = session.user;
-            req.session = session;
+            req.token = token;
             next();
         } catch (error) {
             logger.error("Token verification failed", error.stack);
