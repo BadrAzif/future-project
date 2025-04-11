@@ -54,17 +54,19 @@ const handleSocialLogin = async (req, res, provider) => {
                     },
                 });
             } else {
-                socialAccount = await prisma.socialAccount.create({
+                socialAccount = await prisma.user.create({
                     data: {
                         email: profile.email,
                         firstName: profile.firstName || profile.given.firstName || "",
                         lastName: profile.lastName || profile.family.lastName || "",
                         isVerified: true,
                         socialAccounts: {
-                            provider,
-                            providerId,
-                            accessToken,
-                            refreshToken,
+                            create: {
+                                provider,
+                                providerId,
+                                accessToken,
+                                refreshToken,
+                            },
                         },
                     },
                 });

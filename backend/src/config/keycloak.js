@@ -1,31 +1,11 @@
-import keycloak from 'keycloak-connect'
-import session from 'express-session'
-import 'dotenv/config'
-const keycloakConfig = (app)=>{
-    const memoryStore = new session.MemoryStore()
-    app.use(session({
-        secret:process.env.SESSION_SECRET,
-        resave:false,
-        saveUninitialized:false,
-        store:memoryStore,
-    }))
+import 'dotenv/config';
 
-    const keyCloak = new keycloak({
-        store:memoryStore,
-        
-    },{
-        realm:process.env.KEYCLOAK_REALM,
-        "auth-server-url":process.env.KEYCLOAK_URL,
-        "ssl-required":'external',
-        resource:process.env.KEYCLOAK_CLIENT_ID,
-        "confidential-port":0,
-        "bearer-only":true,
-        credentails: {
-            secret:process.env.KEYCLOAK_SECRET
-        }
-    })
-    app.use(keyCloak.middleware())
-    return keyCloak
-}
+const keycloakConfig = {
+    realm: process.env.KEYCLOAK_REALM || 'api',
+    authServerUrl: process.env.KEYCLOAK_URL || 'http://localhost:8080/realms',
+    clientId: process.env.KEYCLOAK_CLIENT_ID,
+    clientSecret: process.env.KEYCLOAK_SECRET,
+    redirectUri: `${process.env.APP_URL}/api/auth/social/google/callback`,
+};
 
-export {keycloakConfig} 
+export default keycloakConfig;
